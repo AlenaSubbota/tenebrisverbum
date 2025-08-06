@@ -52,7 +52,7 @@
         function fetchNovels() {
             // URL вашего Flask-сервера. 
             // Внимание: сейчас это локальный адрес! Для продакшена нужен публичный URL.
-            const apiUrl = 'http://127.0.0.1:5000/api/novels';
+            const apiUrl = 'https://ce8caccb40b7.ngrok-free.app';
 
             fetch(apiUrl)
                 .then(response => response.json())
