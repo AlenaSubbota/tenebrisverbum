@@ -9,19 +9,73 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #1c1c1e;
             color: #f2f2f7;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             text-align: center;
         }
-        h1 {
-            color: #ffffff;
+        .novel-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            padding: 20px;
+        }
+        .novel-card {
+            width: 150px;
+            text-align: left;
+            text-decoration: none;
+            color: inherit;
+        }
+        .novel-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .novel-card h3 {
+            font-size: 14px;
+            margin: 8px 0 4px;
+        }
+        .novel-card p {
+            font-size: 12px;
+            color: #8e8e93;
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <h1>Привет, это веб-приложение для новелл!</h1>
+    <h1>Список новелл</h1>
+    <div class="novel-list" id="novel-list">
+        </div>
+    
+    <script>
+        const novelList = document.getElementById('novel-list');
+
+        function fetchNovels() {
+            // URL вашего Flask-сервера. 
+            // Внимание: сейчас это локальный адрес! Для продакшена нужен публичный URL.
+            const apiUrl = 'http://127.0.0.1:5000/api/novels';
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(novel => {
+                        const novelCard = document.createElement('a');
+                        novelCard.className = 'novel-card';
+                        novelCard.href = '#'; // Пока что просто заглушка
+                        novelCard.innerHTML = `
+                            <img src="${novel.cover_url}" alt="${novel.title}">
+                            <h3>${novel.title}</h3>
+                            <p>${novel.author}</p>
+                        `;
+                        novelList.appendChild(novelCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке новелл:', error);
+                    novelList.innerHTML = '<p>Не удалось загрузить список новелл.</p>';
+                });
+        }
+
+        fetchNovels();
+    </script>
 </body>
 </html>
